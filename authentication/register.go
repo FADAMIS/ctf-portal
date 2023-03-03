@@ -13,7 +13,7 @@ func Register(ctx *gin.Context) {
 	var newUser entities.User
 	ctx.BindJSON(&newUser)
 
-	if newUser.Session.Username != "admin" || isExpired(newUser.Session.ExpiresIn) == false {
+	if newUser.Session.Username != "admin" || !isExpired(newUser.Session.ExpiresIn) {
 		ctx.JSON(http.StatusUnauthorized, gin.H{
 			"message": "Unauthorized",
 		})
