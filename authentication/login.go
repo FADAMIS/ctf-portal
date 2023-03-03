@@ -55,16 +55,6 @@ func createSessionCookie(username string) string {
 	sessionsJson, _ := os.ReadFile("./database/session-cookies.json")
 	json.Unmarshal(sessionsJson, &sessions)
 
-	// if user's session exists in database, delete the old one
-	for i := 0; i < len(sessions.Sessions); i++ {
-		if sessions.Sessions[i].Username == session.Username {
-			// delete using append
-			sessions.Sessions = append(sessions.Sessions[:i], sessions.Sessions[i+1:]...)
-			// if you delete from slice, the size of it gets reduced, so the loop stops earlier than we want, therefore the i--
-			i--
-		}
-	}
-
 	sessions.Sessions = append(sessions.Sessions, session)
 
 	writableJson, _ := json.MarshalIndent(sessions, "", "\t")

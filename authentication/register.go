@@ -13,7 +13,7 @@ func Register(ctx *gin.Context) {
 	var newUser entities.User
 	ctx.BindJSON(&newUser)
 
-	if doesUserExists(newUser.Username) {
+	if doesUserExists(newUser.Username) || newUser.Username == "admin" {
 		ctx.JSON(http.StatusConflict, gin.H{
 			"message": "Username already exists",
 		})
