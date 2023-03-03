@@ -10,16 +10,7 @@
     let username
     let password
     function login() {
-        fetch('/login', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                username: username,
-                password: password
-            })
-        })
+        fetch('/login' + '?username=' + username + '&password=' + password, {method: 'GET'})
         .then(res => res.json())
         .then(data => {
             if (data.message == 'Login successful') {
