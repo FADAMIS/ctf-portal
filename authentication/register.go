@@ -13,6 +13,14 @@ func Register(ctx *gin.Context) {
 	var newUser entities.User
 	ctx.BindJSON(&newUser)
 
+	if newUser.Session.Username != "admin" || isExpired(newUser.Session.ExpiresIn) == false {
+		ctx.JSON(http.StatusUnauthorized, gin.H{
+			"message": "Unauthorized",
+		})
+
+		return
+	}
+
 	if doesUserExists(newUser.Username) || newUser.Username == "admin" {
 		ctx.JSON(http.StatusConflict, gin.H{
 			"message": "Username already exists",
