@@ -1,5 +1,11 @@
-node_modules/
-src/styles.css
+
+*.log
+node_modules
+jsconfig.json
 package-lock.json
 package.json
-postcss.config.js
+svelte.config.js
+vite.config.js
+postcss.config.cjs
+tailwind.config.cjs
+.vscode/
