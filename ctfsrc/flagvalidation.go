@@ -1,7 +1,6 @@
 package ctfsrc
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 	"strconv"
@@ -37,9 +36,6 @@ func ValidateFlag(ctx *gin.Context) {
 
 	// read flag and compare it with input
 	serverFlag, _ := os.ReadFile("CTFCONTENTS/" + flag.Challenge + "/FLAG.TXT")
-	fmt.Println(flag.Challenge)
-	fmt.Println(string(serverFlag))
-	fmt.Println(flag.Value)
 	if string(serverFlag) != flag.Value {
 		ctx.JSON(http.StatusConflict, gin.H{
 			"message": "Wrong flag",

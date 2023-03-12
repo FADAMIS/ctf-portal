@@ -2,7 +2,6 @@ package ctfsrc
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 
 	"github.com/Fabucik/ctf-portal/entities"
@@ -19,18 +18,19 @@ func AssignPoints(points int, team string, challenge string) bool {
 		if newPoints.Team == db.Points[i].Team {
 			// if team already answered the flag return from the function
 			for j := 0; j < len(db.Points[i].Solved); j++ {
-				fmt.Println(j)
 				if db.Points[i].Solved[j] == challenge {
 					return false
 				}
 			}
+
+			// update finished flags
+			newPoints.Solved = append(db.Points[i].Solved, challenge)
 
 			// update points and delete old entry
 			newPoints.PointAmount = db.Points[i].PointAmount + points
 			db.Points = append(db.Points[:i], db.Points[i+1:]...)
 		}
 	}
-	newPoints.Solved = append(newPoints.Solved, challenge)
 
 	db.Points = append(db.Points, newPoints)
 
