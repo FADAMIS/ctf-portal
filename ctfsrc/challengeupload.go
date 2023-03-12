@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/Fabucik/ctf-portal/authentication"
 	"github.com/Fabucik/ctf-portal/entities"
@@ -40,6 +41,7 @@ func CreateChallenge(ctx *gin.Context) {
 	os.Mkdir("CTFCONTENTS/"+challenge.Name+"/FILES", 0777)
 
 	os.WriteFile("CTFCONTENTS/"+challenge.Name+"/FLAG.TXT", []byte(challenge.Flag), 0600)
+	os.WriteFile("CTFCONTENTS/"+challenge.Name+"/POINTS.TXT", []byte(strconv.Itoa(challenge.Points)), 0600)
 
 	// write each file to FILES dir
 	for i := 0; i < len(challenge.Files); i++ {
