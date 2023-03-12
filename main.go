@@ -15,7 +15,7 @@ func main() {
 	server.POST("/register", authentication.Register)
 	server.POST("/login", authentication.Login)
 
-	server.GET("loginpage", servehtml.LoginHTML)
+	server.GET("/loginpage", servehtml.LoginHTML)
 
 	server.Run(":8888")
 }
