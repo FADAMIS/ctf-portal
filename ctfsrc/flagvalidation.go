@@ -49,6 +49,8 @@ func ValidateFlag(ctx *gin.Context) {
 	// assign points
 	points, _ := os.ReadFile("CTFCONTENTS/" + flag.Challenge + "/POINTS.TXT")
 	pointsInt, _ := strconv.Atoi(string(points))
+
+	// if flag was already answered, return status forbidden
 	isSuccess := AssignPoints(pointsInt, session.Username, flag.Challenge)
 	if !isSuccess {
 		ctx.JSON(http.StatusForbidden, gin.H{

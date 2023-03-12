@@ -25,7 +25,7 @@ func AssignPoints(points int, team string, challenge string) bool {
 				}
 			}
 
-			// update and delete
+			// update points and delete old entry
 			newPoints.PointAmount = db.Points[i].PointAmount + points
 			db.Points = append(db.Points[:i], db.Points[i+1:]...)
 		}
