@@ -23,7 +23,7 @@ func Login(ctx *gin.Context) {
 		// if credentials match, create session
 		if dbContent.Users[i].Username == credentials.Username && dbContent.Users[i].Password == credentials.Password {
 			session := createSessionCookie(credentials.Username)
-			ctx.IndentedJSON(http.StatusOK, gin.H{
+			ctx.JSON(http.StatusOK, gin.H{
 				"message": "Login successful",
 				"session": session,
 			})
@@ -31,7 +31,7 @@ func Login(ctx *gin.Context) {
 		}
 	}
 
-	ctx.IndentedJSON(http.StatusUnauthorized, gin.H{
+	ctx.JSON(http.StatusUnauthorized, gin.H{
 		"message": "Login failed",
 	})
 }
