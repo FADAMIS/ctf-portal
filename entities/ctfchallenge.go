@@ -7,6 +7,6 @@ type Challenge struct {
 }
 
 type ChallengeFile struct {
-	FileName string `json:"name"`
+	FileName string `json:"filename"`
 	Base64   string `json:"base64"`
 }
