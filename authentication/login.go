@@ -63,10 +63,7 @@ func createSessionCookie(username string) string {
 	return string(returnSession)
 }
 
-func IsValidSession(sessionString string) bool {
-	var session entities.Session
-	json.Unmarshal([]byte(sessionString), &session)
-
+func IsValidSession(session entities.Session) bool {
 	dbJson, _ := os.ReadFile("./database/session-cookies.json")
 	var sessions entities.Sessions
 	json.Unmarshal(dbJson, &sessions)
