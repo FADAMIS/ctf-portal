@@ -40,6 +40,19 @@ func Register(ctx *gin.Context) {
 	writableJson, _ := json.MarshalIndent(users, "", "\t")
 	os.WriteFile("./database/users.json", writableJson, 0600)
 
+	// create entries in point database for the newly created user
+	var userPoints entities.TeamPoints
+	userPoints.Team = newUser.Username
+	userPoints.PointAmount = 0
+
+	var db entities.AllPoints
+	pointDb, _ := os.ReadFile("./database/points.json")
+	json.Unmarshal(pointDb, &db)
+
+	db.Points = append(db.Points, userPoints)
+	writableJson, _ = json.MarshalIndent(db, "", "\t")
+	os.WriteFile("./database/points.json", writableJson, 0600)
+
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": "Register successful",
 	})

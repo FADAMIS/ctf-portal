@@ -20,6 +20,8 @@ func main() {
 	// challenge upload
 	server.POST("/upload", ctfsrc.CreateChallenge)
 
+	server.POST("/validate", ctfsrc.ValidateFlag)
+
 	// html serving
 	server.GET("/loginpage", servehtml.LoginHTML)
 
