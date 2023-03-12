@@ -24,11 +24,13 @@ func CreateChallenge(ctx *gin.Context) {
 		return
 	}
 
+	// all ctf challenges are stored under CTFCONTENTS directory as other directories
 	os.Mkdir("CTFCONTENTS/"+challenge.Name, 0777)
 	os.Mkdir("CTFCONTENTS/"+challenge.Name+"/FILES", 0777)
 
 	os.WriteFile("CTFCONTENTS/"+challenge.Name+"/FLAG.TXT", []byte(challenge.Flag), 0600)
 
+	// write each file to FILES dir
 	for i := 0; i < len(challenge.Files); i++ {
 		contents, err := base64.StdEncoding.DecodeString(challenge.Files[i].Base64)
 		if err != nil {
