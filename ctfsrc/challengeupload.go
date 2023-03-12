@@ -24,6 +24,17 @@ func CreateChallenge(ctx *gin.Context) {
 		return
 	}
 
+	entries, _ := os.ReadDir("CTFCONTENTS")
+	for _, e := range entries {
+		if challenge.Name == e.Name() {
+			ctx.JSON(http.StatusConflict, gin.H{
+				"message": "challenge's name is taken",
+			})
+
+			return
+		}
+	}
+
 	// all ctf challenges are stored under CTFCONTENTS directory as other directories
 	os.Mkdir("CTFCONTENTS/"+challenge.Name, 0777)
 	os.Mkdir("CTFCONTENTS/"+challenge.Name+"/FILES", 0777)
