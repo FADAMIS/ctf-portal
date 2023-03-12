@@ -7,17 +7,18 @@ import (
 
 	"github.com/Fabucik/ctf-portal/entities"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 )
 
 func Register(ctx *gin.Context) {
 	var newUser entities.User
-	ctx.BindJSON(&newUser)
+	ctx.ShouldBindBodyWith(&newUser, binding.JSON)
 
-	if !IsValidSession(newUser.Session) || IsValidSession(newUser.Session) && newUser.Session.Username != "admin" {
-		ctx.JSON(http.StatusUnauthorized, gin.H{
-			"message": "Unauthorized",
-		})
+	var session entities.Session
+	ctx.ShouldBindBodyWith(&session, binding.JSON)
 
+	isAdmin := IsAdmin(ctx, session)
+	if !isAdmin {
 		return
 	}
 
