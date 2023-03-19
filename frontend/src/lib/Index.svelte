@@ -1,11 +1,4 @@
 <script>
-    //blinking cursor
-    window.onload = function() {
-        document.getElementById("username").focus();
-    }
-    window.onload = function() {
-        document.getElementById("password").focus();
-    }
     //send login request with fetch
     let username
     let password

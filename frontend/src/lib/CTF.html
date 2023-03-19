@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Globe.gl Example</title>
+    <style>body { margin: 0; }</style>
+    <script src="//unpkg.com/d3"></script>
+    <script src="//unpkg.com/globe.gl"></script>
+  </head>
+  <body>
+    <div id="globeViz"></div>
+    <script>
+      const colorScale = d3.scaleSequentialSqrt(d3.interpolateYlOrRd);
+      const getVal = feat => feat.properties.GDP_MD_EST / Math.max(1e5, feat.properties.POP_EST);
+
+      fetch('map.geojson').then(res => res.json()).then(countries => {
+        const maxVal = Math.max(...countries.features.map(getVal));
+        colorScale.domain([0, maxVal]);
+
+        var world = Globe()
+          .globeImageUrl('//unpkg.com/three-globe/example/img/earth-dark.jpg')
+          .backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
+          .polygonsData(countries.features.filter(d => d.properties.ISO_A2 !== 'AQ'))
+          .polygonAltitude(0.02)
+          .polygonCapColor('rgb(22, 22, 22)')
+          .polygonSideColor(() => 'rgb(93, 52, 179)')
+          .polygonStrokeColor(() => '#5D34B3')
+          .onPolygonHover(hoverD => world
+          .polygonAltitude(d => d === hoverD ? 0.04 : 0.02)
+          .polygonCapColor(d => d === hoverD ? 'rgb(52, 24, 111)' : 'rgb(22, 22, 22)'))
+          .polygonsTransitionDuration(300)
+          .onPolygonClick(({ properties: d }) => {
+            document.getElementById('challange_country').innerHTML = d.ADMIN;
+            document.getElementById('challange').style.display = 'grid';
+            addEventListener('click', () => {
+              if (event.target.id !== 'challange' && event.target.id !== 'challange_country' && event.target.id !== 'challange_name' && event.target.id !== 'challange_description' && event.target.id !== 'challange_flag' && event.target.id !== 'flag' && event.target.id !== 'submit')
+                document.getElementById('challange').style.display = 'none';
+            });
+          })
+          .polygonsTransitionDuration(300) 
+        (document.getElementById('globeViz'))
+      });
+      addEventListener('resize', () => location.reload());
+    </script>
+    <div id="challange">
+      <p id="challange_name">Challange Name</p>
+      <p id="challange_country"></p>
+      <p id="challange_description">Challange Description</p>
+      <form id="challange_flag" method="post">
+        <input type="text" id="flag" placeholder="Flag" />
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
+  </body>
+  <style>
+    #challange {
+      position: absolute;
+      display: none;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: sans-serif;
+      font-size: 2em;
+      color: #fff;
+      background: rgb(10, 10, 10);
+      width: 600px;
+      height: 300px;
+      border-radius: 10px;
+      padding: 20px;
+      border: 2px solid rgb(93, 52, 179);
+      opacity: 0.9; 
+    }
+    #challange_name {
+      font-family: monospace;
+      font-weight: normal;
+      font-size: 1.5em;
+      height: 50px;
+    }
+    #challange_country {
+      font-family: monospace;
+      font-weight: lighter;
+      color: rgb(120, 120, 120);
+      font-size: 1em;
+    }
+    #challange_description {
+      font-family: monospace;
+      font-weight: lighter;
+      font-size: 0.5em;
+    }
+  </style>
+</html>
