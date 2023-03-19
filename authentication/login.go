@@ -2,6 +2,7 @@ package authentication
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"os"
 	"time"
@@ -13,7 +14,9 @@ import (
 
 func Login(ctx *gin.Context) {
 	var credentials entities.User
-	ctx.BindJSON(&credentials)
+	ctx.Bind(&credentials)
+
+	fmt.Println(credentials.Username)
 
 	dbJson, _ := os.ReadFile("./database/users.json")
 	var dbContent entities.Users
@@ -23,9 +26,9 @@ func Login(ctx *gin.Context) {
 		// if credentials match, create session
 		if dbContent.Users[i].Username == credentials.Username && dbContent.Users[i].Password == credentials.Password {
 			session := createSessionCookie(credentials.Username)
+			ctx.SetCookie("session", session, int(time.Now().Unix()+6*60*60), "/", "localhost", false, true)
 			ctx.JSON(http.StatusOK, gin.H{
 				"message": "Login successful",
-				"session": session,
 			})
 			return
 		}
@@ -61,28 +64,6 @@ func createSessionCookie(username string) string {
 	os.WriteFile("./database/session-cookies.json", writableJson, 0600)
 
 	return string(returnSession)
-}
-
-func IsValidSession(session entities.Session) bool {
-	dbJson, _ := os.ReadFile("./database/session-cookies.json")
-	var sessions entities.Sessions
-	json.Unmarshal(dbJson, &sessions)
-
-	for i := 0; i < len(sessions.Sessions); i++ {
-		if session == sessions.Sessions[i] {
-			// if session exists BUT is expired, delete the session
-			if isExpired(session.ExpiresIn) {
-				sessions.Sessions = append(sessions.Sessions[:i], sessions.Sessions[i+1:]...)
-				writableJson, _ := json.MarshalIndent(sessions, "", "\t")
-				os.WriteFile("./database/session-cookies.json", writableJson, 0600)
-				return false
-			}
-
-			return true
-		}
-	}
-
-	return false
 }
 
 func isExpired(sessionTime int64) bool {

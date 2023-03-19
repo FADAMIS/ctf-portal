@@ -2,6 +2,7 @@ package ctfsrc
 
 import (
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"os"
@@ -18,7 +19,8 @@ func CreateChallenge(ctx *gin.Context) {
 	ctx.ShouldBindBodyWith(&challenge, binding.JSON)
 
 	var session entities.Session
-	ctx.ShouldBindBodyWith(&session, binding.JSON)
+	cookie, _ := ctx.Cookie("session")
+	json.Unmarshal([]byte(cookie), &session)
 
 	isAdmin := authentication.IsAdmin(ctx, session)
 	if !isAdmin {

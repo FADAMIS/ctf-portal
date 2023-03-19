@@ -23,6 +23,8 @@ func main() {
 	// flag validation
 	server.POST("/validate", ctfsrc.ValidateFlag)
 
+	server.GET("/challenges", ctfsrc.GetChallenges)
+
 	// html serving
 	server.GET("/loginpage", servehtml.LoginHTML)
 

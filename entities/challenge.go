@@ -12,3 +12,19 @@ type ChallengeFile struct {
 	FileName string `json:"filename"`
 	Base64   string `json:"base64"`
 }
+
+type Challenges struct {
+	Challenges []Challenge `json:"challenges"`
+}
+
+// this will be sent to the client, basically challenge struct stripped by the flag
+type ReturnChallenge struct {
+	Name        string          `json:"name"`
+	Files       []ChallengeFile `json:"files"`
+	Points      int             `json:"points"`
+	Description string          `json:"description"`
+}
+
+type ReturnChallenges struct {
+	Challenges []ReturnChallenge `json:"challenges"`
+}

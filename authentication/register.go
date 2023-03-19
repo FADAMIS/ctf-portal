@@ -15,7 +15,8 @@ func Register(ctx *gin.Context) {
 	ctx.ShouldBindBodyWith(&newUser, binding.JSON)
 
 	var session entities.Session
-	ctx.ShouldBindBodyWith(&session, binding.JSON)
+	cookie, _ := ctx.Cookie("session")
+	json.Unmarshal([]byte(cookie), &session)
 
 	isAdmin := IsAdmin(ctx, session)
 	if !isAdmin {

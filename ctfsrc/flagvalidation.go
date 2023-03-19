@@ -1,6 +1,7 @@
 package ctfsrc
 
 import (
+	"encoding/json"
 	"net/http"
 	"os"
 	"strconv"
@@ -16,7 +17,8 @@ func ValidateFlag(ctx *gin.Context) {
 	ctx.ShouldBindBodyWith(&flag, binding.JSON)
 
 	var session entities.Session
-	ctx.ShouldBindBodyWith(&session, binding.JSON)
+	cookie, _ := ctx.Cookie("session")
+	json.Unmarshal([]byte(cookie), &session)
 
 	if !authentication.IsValidSession(session) {
 		ctx.JSON(http.StatusUnauthorized, gin.H{
