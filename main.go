@@ -25,6 +25,10 @@ func main() {
 
 	server.GET("/challenges", ctfsrc.GetChallenges)
 
+	server.POST("/announcement", ctfsrc.CreateAnnouncement)
+	server.GET("/announcement", ctfsrc.GetAnnouncements)
+	server.DELETE("/announcement", ctfsrc.DeleteAnnouncement)
+
 	// html serving
 	server.GET("/loginpage", servehtml.LoginHTML)
 
