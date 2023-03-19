@@ -23,8 +23,10 @@ func main() {
 	// flag validation
 	server.POST("/validate", ctfsrc.ValidateFlag)
 
+	// lists challenges
 	server.GET("/challenges", ctfsrc.GetChallenges)
 
+	// announcement stuff
 	server.POST("/announcement", ctfsrc.CreateAnnouncement)
 	server.GET("/announcement", ctfsrc.GetAnnouncements)
 	server.DELETE("/announcement", ctfsrc.DeleteAnnouncement)
