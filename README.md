@@ -2,6 +2,10 @@
 
 Backend and frontend of CTF contest portal, originally made for HackDays but is generally usable.
 
+CTF challenges are stored in CTFCONTENTS directory - every challenge has it's own subdirectory
+
+---
+
 **Made with Go and Svelte**
 
 *Far from finished, in development*
