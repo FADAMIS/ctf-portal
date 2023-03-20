@@ -7,5 +7,5 @@ import (
 )
 
 func LoginHTML(ctx *gin.Context) {
-	ctx.HTML(http.StatusOK, "login.html", gin.H{})
+	ctx.HTML(http.StatusOK, "index.html", gin.H{})
 }

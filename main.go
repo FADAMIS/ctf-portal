@@ -10,8 +10,8 @@ import (
 func main() {
 	server := gin.Default()
 
-	server.LoadHTMLFiles("frontend/dist/login.html", "frontend/dist/admin.html", "frontend/dist/CTF.html")
-	server.Static("/assets", "./frontend/dist/assets")
+	server.LoadHTMLFiles("frontend/dist_collected/index.html", "frontend/dist_collected/admin.html", "frontend/dist_collected/CTF.html")
+	server.Static("/assets", "./frontend/dist_collected/assets")
 
 	//authentication stuff
 	server.POST("/register", authentication.Register)
@@ -32,7 +32,7 @@ func main() {
 	server.DELETE("/announcement", ctfsrc.DeleteAnnouncement)
 
 	// html serving
-	server.GET("/loginpage", servehtml.LoginHTML)
+	server.GET("/", servehtml.LoginHTML)
 	server.GET("/dashboard", servehtml.AdminHTML)
 	server.GET("/ctf", servehtml.CtfHTML)
 

@@ -2,3 +2,5 @@ database/*
 !database/.gitignore
 CTFCONTENTS/*
 !CTFCONTENTS/.gitignore
+bin/*
+!bin/.gitignore
