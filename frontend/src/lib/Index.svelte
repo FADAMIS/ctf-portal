@@ -14,7 +14,7 @@
             })
         }).then(res => {
             if (res.status == 200) {
-                window.location.href = '/dashboard'
+                window.location.href = '/ctf'
             } else {
                 alert('Wrong username or password')
             }

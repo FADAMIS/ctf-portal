@@ -4,5 +4,5 @@
   import Admin from './lib/Admin.svelte';
 </script>
 <main>
-  <Admin />
+  <Index />
 </main>
