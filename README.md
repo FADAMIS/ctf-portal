@@ -6,14 +6,13 @@ CTF challenges are stored in CTFCONTENTS directory - every challenge has it's ow
 
 ## TODO:
 - Team management (backend)
-- CTF Start / Stop (backend)
 - Add integration with backend (frontend)
 
 ---
 
 **Made with Go and Svelte**
 
-*Far from finished, in development*
+*Nearly finished, in development*
 
 Developers:
 - Backend - [Fabucik](https://github.com/Fabucik)
