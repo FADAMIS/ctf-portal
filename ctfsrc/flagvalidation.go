@@ -22,7 +22,15 @@ func ValidateFlag(ctx *gin.Context) {
 
 	if !authentication.IsValidSession(session) {
 		ctx.JSON(http.StatusUnauthorized, gin.H{
-			"message": "Unauthorized",
+			"message": "Not logged in",
+		})
+
+		return
+	}
+
+	if !IsCtfStarted() || IsCtfExpired() {
+		ctx.JSON(http.StatusUnauthorized, gin.H{
+			"message": "CTF is not yet started",
 		})
 
 		return

@@ -26,8 +26,13 @@ func main() {
 	// lists challenges
 	server.GET("/challenges", ctfsrc.GetChallenges)
 
-	//lists teams
+	// lists teams
 	server.GET("/teams", ctfsrc.GetTeams)
+
+	// ctf start and stop
+	server.POST("/timedstart", ctfsrc.SetTime)
+	server.GET("/timedstart", ctfsrc.GetTime)
+	server.POST("/manualstart", ctfsrc.ManualStartStop)
 
 	// announcement stuff
 	server.POST("/announcement", ctfsrc.CreateAnnouncement)

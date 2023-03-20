@@ -19,7 +19,15 @@ func GetChallenges(ctx *gin.Context) {
 
 	if !authentication.IsValidSession(session) {
 		ctx.JSON(http.StatusUnauthorized, gin.H{
-			"message": "not logged in",
+			"message": "Not logged in",
+		})
+
+		return
+	}
+
+	if !IsCtfStarted() || IsCtfExpired() {
+		ctx.JSON(http.StatusUnauthorized, gin.H{
+			"message": "CTF is not yet started",
 		})
 
 		return
