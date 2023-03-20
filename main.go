@@ -10,7 +10,7 @@ import (
 func main() {
 	server := gin.Default()
 
-	server.LoadHTMLFiles("frontend/dist/index.html")
+	server.LoadHTMLFiles("frontend/dist/login.html", "frontend/dist/admin.html", "frontend/dist/CTF.html")
 	server.Static("/assets", "./frontend/dist/assets")
 
 	//authentication stuff
@@ -33,6 +33,8 @@ func main() {
 
 	// html serving
 	server.GET("/loginpage", servehtml.LoginHTML)
+	server.GET("/dashboard", servehtml.AdminHTML)
+	server.GET("/ctf", servehtml.CtfHTML)
 
 	server.Run(":8888")
 }
