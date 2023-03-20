@@ -26,7 +26,7 @@ func Login(ctx *gin.Context) {
 		// if credentials match, create session
 		if dbContent.Users[i].Username == credentials.Username && dbContent.Users[i].Password == credentials.Password {
 			session := createSessionCookie(credentials.Username)
-			ctx.SetCookie("session", session, int(time.Now().Unix()+6*60*60), "/", "localhost", false, true)
+			ctx.SetCookie("session", session, 6*60*60, "/", "localhost", false, true)
 			ctx.JSON(http.StatusOK, gin.H{
 				"message": "Login successful",
 			})
