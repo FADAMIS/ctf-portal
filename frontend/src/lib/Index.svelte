@@ -3,13 +3,20 @@
     let username
     let password
     function login() {
-        fetch('/login' + '?username=' + username + '&password=' + password, {method: 'GET'})
-        .then(res => res.json())
-        .then(data => {
-            if (data.message == 'Login successful') {
-                alert(data.message + ": " + data.session)
+        fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: username,
+                password: password
+            })
+        }).then(res => res.json()).then(data => {
+            if (data.success) { 
+                window.location.href = '/dashboard'
             } else {
-                alert(data.message)
+                alert(data.error)
             }
         })
     }
