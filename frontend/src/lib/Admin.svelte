@@ -71,29 +71,33 @@
                     <h1 class="text-xl text-gray-300 font-mono">Export</h1>
                 </div>
             </div>
-            {#if pages[0] == true}
+            {#if pages[0] == false && pages[1] == false && pages[2] == false && pages[3] == false && pages[4] == false && pages[5] == false}
             <div class="w-full flex place-content-center">
-                <h1 class="text-gray-300">General</h1>
+                <h1 class="text-gray-300 text-2xl mt-5 font-mono">General</h1>
+            </div>
+            {:else if pages[0] == true}
+            <div class="w-full flex place-content-center">
+                <h1 class="text-gray-300 text-2xl mt-5 font-mono">General</h1>
             </div>
             {:else if pages[1] == true}
             <div class="w-full flex place-content-center">
-                <h1 class="text-gray-300">Announcment</h1>
+                <h1 class="text-gray-300 text-2xl mt-5 font-mono">Announcment</h1>
             </div>
             {:else if pages[2] == true}
             <div class="w-full flex place-content-center">
-                <h1 class="text-gray-300">Challanges</h1>
+                <h1 class="text-gray-300 text-2xl mt-5 font-mono">Challanges</h1>
             </div>
             {:else if pages[3] == true}
             <div class="w-full flex place-content-center">
-                <h1 class="text-gray-300">Teams</h1>
+                <h1 class="text-gray-300 text-2xl mt-5 font-mono">Teams</h1>
             </div>
             {:else if pages[4] == true}
             <div class="w-full flex place-content-center">
-                <h1 class="text-gray-300">Import</h1>
+                <h1 class="text-gray-300 text-2xl mt-5 font-mono">Import</h1>
             </div>
             {:else if pages[5] == true}
             <div class="w-full flex place-content-center">
-                <h1 class="text-gray-300">Export</h1>
+                <h1 class="text-gray-300 text-2xl mt-5 font-mono">Export</h1>
             </div>
             {/if}
         </div>

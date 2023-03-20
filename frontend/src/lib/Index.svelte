@@ -12,11 +12,11 @@
                 username: username,
                 password: password
             })
-        }).then(res => res.json()).then(data => {
-            if (data.success) { 
+        }).then(res => {
+            if (res.status == 200) {
                 window.location.href = '/dashboard'
             } else {
-                alert(data.error)
+                alert('Wrong username or password')
             }
         })
     }

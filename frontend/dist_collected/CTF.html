@@ -42,6 +42,9 @@
       });
       addEventListener('resize', () => location.reload());
     </script>
+    <div id="countDown">
+      <h1>00:00:00</h1>
+    </div>
     <div id="challange">
       <p id="challange_name">Challange Name</p>
       <p id="challange_country"></p>
@@ -53,6 +56,19 @@
     </div>
   </body>
   <style>
+    #countDown {
+      /* center it horizontally */
+      font-family: monospace;
+      font-weight: lighter;
+      font-size: 1.5em;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100px;
+      text-align: center;
+      color:#fff;
+    }
     #challange {
       position: absolute;
       display: none;
