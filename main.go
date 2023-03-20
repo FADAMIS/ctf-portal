@@ -26,6 +26,9 @@ func main() {
 	// lists challenges
 	server.GET("/challenges", ctfsrc.GetChallenges)
 
+	//lists teams
+	server.GET("/teams", ctfsrc.GetTeams)
+
 	// announcement stuff
 	server.POST("/announcement", ctfsrc.CreateAnnouncement)
 	server.GET("/announcement", ctfsrc.GetAnnouncements)
