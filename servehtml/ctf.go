@@ -16,7 +16,7 @@ func CtfHTML(ctx *gin.Context) {
 
 	if !authentication.IsValidSession(session) {
 		ctx.JSON(http.StatusUnauthorized, gin.H{
-			"message": "Not logges in",
+			"message": "Not logged in",
 		})
 
 		return
