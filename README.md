@@ -5,9 +5,9 @@ Backend and frontend of CTF contest portal, originally made for HackDays but is 
 CTF challenges are stored in CTFCONTENTS directory - every challenge has it's own subdirectory
 
 ## TODO:
-- Team management (backend)
 - Finish adding challenges (frontend)
 - Add Announcments, count down and leaderboard to gameboard (frontend)
+- Add function to return points of all teams (backend)
 
 ---
 
