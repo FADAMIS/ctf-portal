@@ -2,7 +2,6 @@ package authentication
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"os"
 	"time"
@@ -15,8 +14,6 @@ import (
 func Login(ctx *gin.Context) {
 	var credentials entities.User
 	ctx.Bind(&credentials)
-
-	fmt.Println(credentials.Username)
 
 	dbJson, _ := os.ReadFile("./database/users.json")
 	var dbContent entities.Users
