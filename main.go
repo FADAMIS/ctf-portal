@@ -26,8 +26,9 @@ func main() {
 	// lists challenges
 	server.GET("/challenges", ctfsrc.GetChallenges)
 
-	// lists teams
+	// team management
 	server.GET("/teams", ctfsrc.GetTeams)
+	server.DELETE("/teams", ctfsrc.DeleteTeam)
 
 	// ctf start and stop
 	server.POST("/timedstart", ctfsrc.SetTime)
