@@ -43,6 +43,7 @@ func main() {
 	server.GET("/announcement", ctfsrc.GetAnnouncements)
 	server.DELETE("/announcement", ctfsrc.DeleteAnnouncement)
 
+	// importing and exporting CTF challenges
 	server.GET("/backup", ctfsrc.Export)
 	server.POST("/backup", ctfsrc.Import)
 
