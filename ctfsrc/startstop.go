@@ -60,7 +60,7 @@ func GetTime(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, ctfTime)
 }
 
-func ManualStartStop(ctx *gin.Context) {
+func SetManualStartStop(ctx *gin.Context) {
 	var session entities.Session
 	cookie, _ := ctx.Cookie("session")
 	json.Unmarshal([]byte(cookie), &session)
@@ -86,6 +86,26 @@ func ManualStartStop(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": "CTF running status is " + strconv.FormatBool(manualStart.IsStarted),
 	})
+}
+
+func GetManualStartStop(ctx *gin.Context) {
+	var session entities.Session
+	cookie, _ := ctx.Cookie("session")
+	json.Unmarshal([]byte(cookie), &session)
+
+	if !authentication.IsValidSession(session) {
+		ctx.JSON(http.StatusUnauthorized, gin.H{
+			"message": "Not logged in",
+		})
+
+		return
+	}
+
+	var ctfTime entities.ManualStart
+	startDb, _ := os.ReadFile("./database/time.json")
+	json.Unmarshal(startDb, &ctfTime)
+
+	ctx.JSON(http.StatusOK, ctfTime)
 }
 
 func IsCtfExpired() bool {

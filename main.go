@@ -36,7 +36,8 @@ func main() {
 	// ctf start and stop
 	server.POST("/timedstart", ctfsrc.SetTime)
 	server.GET("/timedstart", ctfsrc.GetTime)
-	server.POST("/manualstart", ctfsrc.ManualStartStop)
+	server.POST("/manualstart", ctfsrc.SetManualStartStop)
+	server.GET("/manualstart", ctfsrc.GetManualStartStop)
 
 	// announcement stuff
 	server.POST("/announcement", ctfsrc.CreateAnnouncement)
