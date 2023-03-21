@@ -30,6 +30,9 @@ func main() {
 	server.GET("/teams", ctfsrc.GetTeams)
 	server.DELETE("/teams", ctfsrc.DeleteTeam)
 
+	// returns json with all teams and their points
+	server.GET("/points", ctfsrc.GetAllPoints)
+
 	// ctf start and stop
 	server.POST("/timedstart", ctfsrc.SetTime)
 	server.GET("/timedstart", ctfsrc.GetTime)

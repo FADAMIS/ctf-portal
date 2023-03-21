@@ -2,9 +2,12 @@ package ctfsrc
 
 import (
 	"encoding/json"
+	"net/http"
 	"os"
 
+	"github.com/Fabucik/ctf-portal/authentication"
 	"github.com/Fabucik/ctf-portal/entities"
+	"github.com/gin-gonic/gin"
 )
 
 func AssignPoints(points int, team string, challenge string) bool {
@@ -38,4 +41,22 @@ func AssignPoints(points int, team string, challenge string) bool {
 	os.WriteFile("./database/points.json", writableJson, 0600)
 
 	return true
+}
+
+func GetAllPoints(ctx *gin.Context) {
+	var session entities.Session
+	cookie, _ := ctx.Cookie("session")
+	json.Unmarshal([]byte(cookie), &session)
+
+	if !authentication.IsValidSession(session) {
+		ctx.JSON(http.StatusUnauthorized, gin.H{
+			"message": "Not logged in",
+		})
+	}
+
+	var allPoints entities.AllPoints
+	pointDb, _ := os.ReadFile("./database/points.json")
+	json.Unmarshal(pointDb, &allPoints)
+
+	ctx.JSON(http.StatusOK, allPoints)
 }
