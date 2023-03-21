@@ -42,6 +42,14 @@ func DeleteTeam(ctx *gin.Context) {
 	userDb, _ := os.ReadFile("./database/users.json")
 	json.Unmarshal(userDb, &users)
 
+	var points entities.AllPoints
+	pointDb, _ := os.ReadFile("./database/points.json")
+	json.Unmarshal(pointDb, &points)
+
+	var sessions entities.Sessions
+	sessionDb, _ := os.ReadFile("./database/session-cookies.json")
+	json.Unmarshal(sessionDb, &sessions)
+
 	check := 0
 	for i := 0; i < len(users.Users); i++ {
 		// cannot delete admin user
@@ -65,8 +73,26 @@ func DeleteTeam(ctx *gin.Context) {
 		return
 	}
 
-	writableJson, _ := json.MarshalIndent(&users, "", "\t")
-	os.WriteFile("./database/users.json", writableJson, 0600)
+	for i := 0; i < len(points.Points); i++ {
+		if userToDelete.Username == points.Points[i].Team {
+			points.Points = append(points.Points[:i], points.Points[i+1:]...)
+		}
+	}
+
+	for i := 0; i < len(sessions.Sessions); i++ {
+		if userToDelete.Username == sessions.Sessions[i].Username {
+			sessions.Sessions = append(sessions.Sessions[:i], sessions.Sessions[i+1:]...)
+		}
+	}
+
+	writableUserJson, _ := json.MarshalIndent(&users, "", "\t")
+	os.WriteFile("./database/users.json", writableUserJson, 0600)
+
+	writablePointJson, _ := json.MarshalIndent(&points, "", "\t")
+	os.WriteFile("./database/points.json", writablePointJson, 0600)
+
+	writableSessionJson, _ := json.MarshalIndent(&sessions, "", "\t")
+	os.WriteFile("./database/session-cookies.json", writableSessionJson, 0600)
 
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": "OK",
