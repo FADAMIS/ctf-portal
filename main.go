@@ -43,6 +43,9 @@ func main() {
 	server.GET("/announcement", ctfsrc.GetAnnouncements)
 	server.DELETE("/announcement", ctfsrc.DeleteAnnouncement)
 
+	server.GET("/backup", ctfsrc.Export)
+	server.POST("/backup", ctfsrc.Import)
+
 	// html serving
 	server.GET("/", servehtml.LoginHTML)
 	server.GET("/dashboard", servehtml.AdminHTML)
