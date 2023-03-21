@@ -7,7 +7,6 @@ CTF challenges are stored in CTFCONTENTS directory - every challenge has it's ow
 ## TODO:
 - Finish adding challenges (frontend)
 - Add Announcments, count down and leaderboard to gameboard (frontend)
-- Add function to return points of all teams (backend)
 
 ---
 
