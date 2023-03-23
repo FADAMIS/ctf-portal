@@ -39,11 +39,72 @@
           })
           .polygonsTransitionDuration(300) 
         (document.getElementById('globeViz'))
+        addEventListener('resize', () => location.reload());
       });
-      addEventListener('resize', () => location.reload());
+    </script>
+    <script>
+      let announcements = [];
+      let challanges = [];
+      let leaderboard = [];
+
+      function getTimer() {
+        fetch('/timedstart')
+            .then(res => res.json())
+            .then(data => {
+              console.log(data);
+              const starttime = data.starttime;
+              const endtime = data.endtime;
+              const now = new Date().getTime();
+              console.log(now);
+
+            })
+      };
+
+      function getAnnouncments() {
+        fetch('/announcement')
+            .then(res => res.json())
+            .then(data => {
+                announcements = data.announcements;
+                addAnnouncment(announcements);
+                //console.log(announcments);
+            })
+      }
+      function getChallanges() {
+        fetch('/challenges')
+            .then(res => res.json())
+            .then(data => {
+                challanges = data;
+                //console.log(challanges);
+            })
+      }
+      function getLeaderboard() {
+        fetch('/points')
+            .then(res => res.json())
+            .then(data => {
+                leaderboard = data.allpoints;
+                for (i = 0; i < leaderboard.length; i++) {
+                  //make h1 for every team
+                  const team = document.createElement('p');
+                  team.innerHTML = leaderboard[i].team + ": " + leaderboard[i].points;
+                  document.getElementById('leaderboard').appendChild(team);
+                }
+            })
+      }
+      getTimer();
+      getAnnouncments();
+      getChallanges();
+      getLeaderboard();
+
+      function addAnnouncment(announcements) {
+        //get latest announcment
+        const latestAnnouncment = announcements[announcements.length - 1].message;
+      }
     </script>
     <div id="countDown">
       <h1>00:00:00</h1>
+    </div>
+    <div id="leaderboard">
+      <p style="font-size: 1.5em;">LEADERBOARD: </p>
     </div>
     <div id="challange">
       <p id="challange_name">Challange Name</p>
@@ -56,6 +117,35 @@
     </div>
   </body>
   <style>
+    body {
+      overflow: hidden;
+    }
+    #leaderboard {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 20%;
+      height: 100%;
+      color: #fff;
+      background: rgb(10, 10, 10);
+      opacity: 0.9;
+      padding: 20px;
+      font-family: monospace;
+      font-size: 1em;
+    }
+    #announcment {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 20%;
+      height: 100%;
+      color: #fff;
+      background: rgb(10, 10, 10);
+      opacity: 0.9;
+      padding: 20px;
+      font-family: sans-serif;
+      font-size: 1.5em;
+    }
     #countDown {
       /* center it horizontally */
       font-family: monospace;
