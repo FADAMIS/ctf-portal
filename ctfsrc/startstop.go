@@ -53,11 +53,11 @@ func GetTime(ctx *gin.Context) {
 		return
 	}
 
-	var ctfTime entities.AutomaticStart
+	var ctfTime entities.StartStopInfo
 	timeDb, _ := os.ReadFile("./database/time.json")
 	json.Unmarshal(timeDb, &ctfTime)
 
-	ctx.JSON(http.StatusOK, ctfTime)
+	ctx.JSON(http.StatusOK, ctfTime.Automatic)
 }
 
 func SetManualStartStop(ctx *gin.Context) {
