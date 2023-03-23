@@ -2,8 +2,8 @@
     import { TeamFill, FlagFill, SettingsFill, UploadCloud2Fill, DownloadCloud2Fill, Message3Fill, AddFill } from 'svelte-remixicon';
   import { detach_between_dev, identity } from 'svelte/internal';
     let pages = [false, false, false, false];
-    let teams = [{ username: "admin", password: "1234" }];
-    let challanges = [{name: "uloha",files: [{name: "soubor.txt", base64: "nejakabase64"}, {name: "goofy.txt", base64: "base64nejakej"}], flag: "flag{1234}", points: 60, description: "popis ulohy"}];
+    let teams = [];
+    let challanges = [];
     let files = [];
     let makeChallange = [{name: '', files: files, flag: '', points: 0, description: ''}];
     let challangeIndex = 0;
@@ -23,7 +23,6 @@
             pages[i] = false;
         }
         pages[0] = true;
-        console.log(pages)
     }
     function Announcment() {
         for (let i = 0; i < pages.length; i++) {
@@ -39,7 +38,7 @@
         fetch('/challenges')
             .then(res => res.json())
             .then(data => {
-                challanges = data;
+                challanges = data.challenges;
             })
     }
     function Teams() {
@@ -131,7 +130,7 @@
             .then(data => {
                 announcementId = data.announcements.length})
             if (announcementId == 0) {
-                announcementId = 1
+                announcementId = 0
             }
             else {
                 announcementId = announcementId + 1
@@ -156,11 +155,20 @@
 
     function challangeFileUpload() {
         document.getElementById('makeChallangeFile').click();
-        //get file content as string from input
-        let file = document.getElementById('makeChallangeFile').files[0];
-        let reader = new FileReader();
-        reader.readAsDataURL(file);
-        alert(reader.result)
+        const fileInput = document.querySelector('#makeChallangeFile');
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+
+            const reader = new FileReader();
+            reader.onloadend = () => {
+            const base64String = reader.result.replace('data:', '').replace(/^.+,/, '');
+
+        files.push({filename: file.name, base64: base64String});
+        console.log(makeChallange[0])
+    };
+    reader.readAsDataURL(file);
+});
 
         fileIndex += 1;
         files = files;
@@ -190,7 +198,7 @@
             fetch('/challenges')
                 .then(res => res.json())
                 .then(data => {
-                    challanges = data;
+                    challanges = data.challanges;
             })
         })
     }
@@ -384,7 +392,7 @@
                             </div>
                             <div class="ml-2">
                                 <h1 class="text-white text-2xl font-mono">Points:</h1>
-                                <input type="text" class="w-48 h-10 rounded-xl p-2 bg-gray-800 text-gray-50 flex place-content-center text-center" bind:value={makeChallange[0].points}>
+                                <input type="number" class="w-48 h-10 rounded-xl p-2 bg-gray-800 text-gray-50 flex place-content-center text-center" bind:value={makeChallange[0].points}>
                             </div>
                         </div>
                         <h1 class="text-white text-xl font-mono mt-3">Files:</h1>

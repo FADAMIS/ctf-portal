@@ -31,6 +31,10 @@
           .polygonsTransitionDuration(300)
           .onPolygonClick(({ properties: d }) => {
             document.getElementById('challange_country').innerHTML = d.ADMIN;
+            document.getElementById('challange_name').innerHTML = challanges[d.ISO_A2].name;
+            document.getElementById('challange_description').innerHTML = challanges[d.ISO_A2].description;
+            document.getElementById('challange_flag').action = challanges[d.ISO_A2].flag;
+            document.getElementById('flag').value = challanges[d.ISO_A2].flag;
             document.getElementById('challange').style.display = 'grid';
             addEventListener('click', () => {
               if (event.target.id !== 'challange' && event.target.id !== 'challange_country' && event.target.id !== 'challange_name' && event.target.id !== 'challange_description' && event.target.id !== 'challange_flag' && event.target.id !== 'flag' && event.target.id !== 'submit')
@@ -51,11 +55,23 @@
         fetch('/timedstart')
             .then(res => res.json())
             .then(data => {
-              console.log(data);
-              const starttime = data.starttime;
-              const endtime = data.endtime;
-              const now = new Date().getTime();
-              console.log(now);
+                const endtime = data.stoptime;
+                var now = new Date().getTime();
+                var nowString = now.toString();
+                nowString = nowString.substring(0, nowString.length - 3);
+                now = parseInt(nowString);
+                const distance = endtime - now;
+                var days = Math.floor(distance / 60 / 60 / 24);
+                var hours = Math.floor((distance % (60 * 60 * 24)) / (60 * 60));
+                var minutes = Math.floor((distance % (60 * 60)) / (60));
+                var seconds = Math.floor((distance % (60)));
+                if (seconds < 0 || minutes < 0 || hours < 0 || days < 0) {
+                    days = "0";
+                    hours = "0";
+                    minutes = "0";
+                    seconds = "0";
+                }
+                document.getElementById('countDown').innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
 
             })
       };
@@ -65,8 +81,18 @@
             .then(res => res.json())
             .then(data => {
                 announcements = data.announcements;
-                addAnnouncment(announcements);
-                //console.log(announcments);
+                console.log(announcements);
+                const myNode = document.getElementById('announcments');
+                while (myNode.firstChild) {
+                  myNode.removeChild(myNode.firstChild);
+                }
+                for (i = 0; i < announcements.length; i++) {
+                  //make h1 for every team
+                  const announcement = document.createElement('p');
+                  announcement.innerHTML = "MESSAGE: " + announcements[i].message;
+                  document.getElementById('announcments').appendChild(announcement);
+
+                }
             })
       }
       function getChallanges() {
@@ -74,7 +100,6 @@
             .then(res => res.json())
             .then(data => {
                 challanges = data;
-                //console.log(challanges);
             })
       }
       function getLeaderboard() {
@@ -82,29 +107,41 @@
             .then(res => res.json())
             .then(data => {
                 leaderboard = data.allpoints;
+                //remove all children
+                const myNode = document.getElementById('leaderboard');
+                while (myNode.firstChild) {
+                  myNode.removeChild(myNode.firstChild);
+                }
                 for (i = 0; i < leaderboard.length; i++) {
                   //make h1 for every team
                   const team = document.createElement('p');
                   team.innerHTML = leaderboard[i].team + ": " + leaderboard[i].points;
                   document.getElementById('leaderboard').appendChild(team);
+
                 }
             })
       }
-      getTimer();
-      getAnnouncments();
-      getChallanges();
-      getLeaderboard();
-
-      function addAnnouncment(announcements) {
-        //get latest announcment
-        const latestAnnouncment = announcements[announcements.length - 1].message;
+      function updater() {
+        getTimer();
+        getAnnouncments();
+        getChallanges();
+        getLeaderboard();
+        setTimeout(updater, 1000);
       }
+    updater();
+
+    function assingnChallangeToCountry(challange) {
+
+    }
     </script>
     <div id="countDown">
-      <h1>00:00:00</h1>
+      <h1></h1>
     </div>
+    <p id="leaderHead">LEADERBOARD: </p>
     <div id="leaderboard">
-      <p style="font-size: 1.5em;">LEADERBOARD: </p>
+    </div>
+    <p id="announcmentsHead">ANNOUNCMENTS: </p>
+    <div id="announcments">
     </div>
     <div id="challange">
       <p id="challange_name">Challange Name</p>
@@ -120,18 +157,55 @@
     body {
       overflow: hidden;
     }
-    #leaderboard {
+    #announcmentsHead {
+        position: absolute;
+        top: 0;
+        left: 0;
+        color: #fff;
+        opacity: 0.9;
+        padding: 20px;
+        font-family: sans-serif;
+        font-size: 1em;
+    }
+    #announcments {
       position: absolute;
-      top: 0;
-      right: 0;
-      width: 20%;
-      height: 100%;
+      top: 60px;
+      left: 10px;
+      width: 250px;
       color: #fff;
       background: rgb(10, 10, 10);
       opacity: 0.9;
       padding: 20px;
       font-family: monospace;
       font-size: 1em;
+      border-radius: 10px;
+      border:#5D34B3;
+      border-style: solid;
+    }
+    #leaderHead {
+        position: absolute;
+        top: 0;
+        right: 60px;
+        color: #fff;
+        opacity: 0.9;
+        padding: 20px;
+        font-family: sans-serif;
+        font-size: 1em;
+    }
+    #leaderboard {
+      position: absolute;
+      top: 60px;
+      right: 10px;
+      width: 150px;
+      color: #fff;
+      background: rgb(10, 10, 10);
+      opacity: 0.9;
+      padding: 20px;
+      font-family: monospace;
+      font-size: 1em;
+      border-radius: 10px;
+      border:#5D34B3;
+      border-style: solid;
     }
     #announcment {
       position: absolute;
@@ -150,9 +224,9 @@
       /* center it horizontally */
       font-family: monospace;
       font-weight: lighter;
-      font-size: 1.5em;
+      font-size: 3em;
       position: absolute;
-      top: 0;
+      top: 10px;
       bottom: 0;
       width: 100%;
       height: 100px;
