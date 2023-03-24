@@ -360,10 +360,13 @@
           }
         }
       }
+
+      console.log(files)
+
       for (i = 0; i < files.length; i++) {
-          const downloadLink = document.createElement("a");
+          var downloadLink = document.createElement("a");
           var type = "";
-          for (i = 0; i < types.length; i++) {
+          for (j = 0; j < types.length; j++) {
             if (files[i].filename.includes(types[i].extension)) {
               type = types[i].type;
             }
@@ -388,9 +391,9 @@
       <p id="challange_points"></p>
       <p id="challange_country"></p>
       <p id="challange_description">Challange Description</p>
-      <input type="text" id="flag" placeholder="Flag" />
-      <button value="Submit" onclick="sendFlag()">Submit</button>
-      <button value="Download" onclick="download()">Download Files</button>
+      <input type="text" class="flag_input" id="flag" placeholder="Flag" />
+      <button value="Submit" id="flagsubmit" onclick="sendFlag()">Submit</button>
+      <button value="Download" id="download" onclick="download()">Download Files</button>
     </div>
   </body>
   <style>
@@ -484,6 +487,10 @@
       color: #fff;
       background: rgb(10, 10, 10);
       width: 600px;
+<<<<<<< HEAD
+      height: 400px;
+=======
+>>>>>>> 7b62cc25f7ac98aa6e1e8a2ffd93bbea8b5dee3f
       border-radius: 10px;
       padding: 20px;
       border: 2px solid rgb(93, 52, 179);
@@ -498,19 +505,110 @@
     #challange_points {
       font-family: monospace;
       font-weight: lighter;
-      color: rgb(121, 121, 121);
+      color: rgb(255, 255, 255);
       font-size: 1em;
     }
     #challange_country {
       font-family: monospace;
       font-weight: lighter;
-      color: rgb(121, 121, 121);
+      color: rgb(255, 255, 255);
       font-size: 1em;
     }
     #challange_description {
       font-family: monospace;
       font-weight: lighter;
-      font-size: 0.5em;
+      font-size: 1em;
+      color:rgb(255, 255, 255)
+    }
+
+    .flag_input {
+      position: absolute;
+      font-family: monospace;
+      color: #ffffff;
+      font-size: 1.2rem;
+      margin-top: 50px;
+      margin-left: 360px;
+      padding: 1.5rem 2rem;
+      border-radius: 10px;
+      background-color: rgb(0, 0, 0);
+      border: 2px solid rgb(93, 52, 179);
+      width: 200px;
+      display: block;
+      transition: all 0.3s;
+    }
+
+    .flag_input:placeholder-shown + .form__label {
+      opacity: 0;
+      visibility: hidden;
+      -webkit-transform: translateY(-4rem);
+      transform: translateY(-4rem);
+    }
+
+    #flagsubmit {
+      position: absolute;
+      background-color: rgb(93, 52, 179);
+      border-radius: 8px;
+      border-style: none;
+      box-sizing: border-box;
+      color: #FFFFFF;
+      cursor: pointer;
+      display: block;
+      font-family: monospace;
+      font-size: 14px;
+      font-weight: 500;
+      height: 40px;
+      width: 200px;
+      line-height: 20px;
+      list-style: none;
+      margin-top: -200px;
+      margin-left: 375px;
+      outline: none;
+      padding: 10px 16px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+      transition: color 100ms;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+
+    #download {
+      position: absolute;
+      background-color: rgb(93, 52, 179);
+      border-radius: 8px;
+      border-style: none;
+      box-sizing: border-box;
+      color: #FFFFFF;
+      cursor: pointer;
+      display: block;
+      font-family: monospace;
+      font-size: 14px;
+      font-weight: 500;
+      height: 40px;
+      width: 200px;
+      line-height: 20px;
+      list-style: none;
+      margin-top: -150px;
+      margin-left: 375px;
+      outline: none;
+      padding: 10px 16px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+      transition: color 100ms;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+
+    #flagsubmit:hover,
+    #flagsubmit:focus {
+      background-color: #664da1;
+    }
+    #download:hover,
+    #download:focus {
+      background-color: #664da1;
     }
   </style>
 </html>
