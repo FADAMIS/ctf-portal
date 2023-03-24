@@ -41,10 +41,12 @@ func GetChallenges(ctx *gin.Context) {
 	for i, entry := range challengeDirs {
 		points, _ := os.ReadFile("CTFCONTENTS/" + entry.Name() + "/POINTS.TXT")
 		description, _ := os.ReadFile("CTFCONTENTS/" + entry.Name() + "/DESCRIPTION.TXT")
+		country, _ := os.ReadFile("CTFCONTENTS/" + entry.Name() + "/COUNTRY.TXT")
 
 		allChallenges.Challenges[i].Name = entry.Name()
 		allChallenges.Challenges[i].Points, _ = strconv.Atoi(string(points))
 		allChallenges.Challenges[i].Description = string(description)
+		allChallenges.Challenges[i].CountryCode = string(country)
 
 		challengeFiles, _ := os.ReadDir("CTFCONTENTS/" + entry.Name() + "/FILES")
 		for _, file := range challengeFiles {

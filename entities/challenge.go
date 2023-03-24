@@ -6,6 +6,7 @@ type Challenge struct {
 	Flag        string          `json:"flag"`
 	Points      int             `json:"points"`
 	Description string          `json:"description"`
+	CountryCode string          `json:"country"`
 }
 
 type ChallengeFile struct {
@@ -23,6 +24,7 @@ type ReturnChallenge struct {
 	Files       []ChallengeFile `json:"files"`
 	Points      int             `json:"points"`
 	Description string          `json:"description"`
+	CountryCode string          `json:"country"`
 }
 
 type ReturnChallenges struct {

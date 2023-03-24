@@ -45,6 +45,7 @@ func CreateChallenge(ctx *gin.Context) {
 	os.WriteFile("CTFCONTENTS/"+challenge.Name+"/FLAG.TXT", []byte(challenge.Flag), 0600)
 	os.WriteFile("CTFCONTENTS/"+challenge.Name+"/POINTS.TXT", []byte(strconv.Itoa(challenge.Points)), 0600)
 	os.WriteFile("CTFCONTENTS/"+challenge.Name+"/DESCRIPTION.TXT", []byte(challenge.Description), 0600)
+	os.WriteFile("CTFCONTENTS/"+challenge.Name+"/COUNTRY.TXT", []byte(challenge.CountryCode), 0600)
 
 	// write each file to FILES dir
 	for i := 0; i < len(challenge.Files); i++ {
