@@ -53,5 +53,5 @@ func main() {
 	server.GET("/dashboard", servehtml.AdminHTML)
 	server.GET("/ctf", servehtml.CtfHTML)
 
-	server.Run(":8888")
+	server.Run(":80")
 }
