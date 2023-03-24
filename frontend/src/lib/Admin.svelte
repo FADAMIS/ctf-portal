@@ -2,10 +2,10 @@
     import { TeamFill, FlagFill, SettingsFill, UploadCloud2Fill, DownloadCloud2Fill, Message3Fill, AddFill } from 'svelte-remixicon';
   import { detach_between_dev, identity } from 'svelte/internal';
     let pages = [false, false, false, false];
-    let teams = [];
+    let teams = [{name: '', password: '', score: 0, solved: []}];
     let challanges = [];
     let files = [];
-    let makeChallange = [{name: '', files: files, flag: '', points: 0, description: ''}];
+    let makeChallange = [{name: '', files: files, flag: '', points: 0, description: '', country: ''}];
     let challangeIndex = 0;
     let fileIndex = 0;
     let fileName;
@@ -35,11 +35,6 @@
             pages[i] = false;
         }
         pages[2] = true;
-        fetch('/challenges')
-            .then(res => res.json())
-            .then(data => {
-                challanges = data.challenges;
-            })
     }
     function Teams() {
         for (let i = 0; i < pages.length; i++) {
@@ -186,7 +181,8 @@
                 files: makeChallange[0].files,
                 flag: makeChallange[0].flag,
                 points: makeChallange[0].points,
-                description: makeChallange[0].description
+                description: makeChallange[0].description,
+                country: makeChallange[0].country
             })
         }).then(res => {
             if (res.status == 200) {
@@ -194,12 +190,6 @@
             } else {
                 alert('💀')
             }
-        }).then(res =>{
-            fetch('/challenges')
-                .then(res => res.json())
-                .then(data => {
-                    challanges = data.challanges;
-            })
         })
     }
 
@@ -254,13 +244,14 @@
     }
 
     function deleteTeam(teamIndex) {
+        var delUsername = teams[teamIndex].username
         fetch('/teams', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                username: teams[teamIndex].username
+                username: delUsername
             })
         }).then(res => {
             if (res.status == 200) {
@@ -383,6 +374,10 @@
                             <div class="ml-2">
                                 <h1 class="text-white text-2xl font-mono">Description:</h1>
                                 <input type="text" class="w-full h-10 rounded-xl p-2 bg-gray-800 text-gray-50 flex place-content-center" bind:value={makeChallange[0].description}>
+                            </div>
+                            <div class="ml-2">
+                                <h1 class="text-white text-2xl font-mono">Country:</h1>
+                                <input type="text" class="w-full h-10 rounded-xl p-2 bg-gray-800 text-gray-50 flex place-content-center" bind:value={makeChallange[0].country}>
                             </div>
                         </div>
                         <div class="flex">
