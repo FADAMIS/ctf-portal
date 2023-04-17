@@ -1,0 +1,16 @@
+---
+import Stats from '../components/ctfstats.svelte';
+import InterfaceGlobe from '../components/globe.jsx';
+---
+
+<html>
+  <body onResize="location.reload()">
+    <Stats client:only />
+    <InterfaceGlobe client:only="react"/>
+  </body>
+</html>
+<style>
+  body {
+    overflow: hidden;
+  }
+</style>
