@@ -6,13 +6,15 @@
     let nano = "00";
     let announcements = ["This is testing announcement so that I can know how it looks."]; 
     let teams = ["Team1", "Team2", "Team3", "Team4", "Team5"];
-   function getTimer() {
-       return fetch('/timedstart').then(res => res.json()).then(data => data.stoptime);
-   }
+    function getTimer() {
+        return fetch('/timedstop').then(res => res.json()).then(data => data.stoptime);
+    }
+
+    let endTime = getTimer()
 
     function countDown() {
         let now = new Date().getTime();
-        let distance = getTimer() - now;
+        let distance = endTime - now;
 
         if (distance > 0) {
             days = Math.floor(distance / (1000 * 60 * 60 * 24));
