@@ -48,10 +48,5 @@ func main() {
 	server.GET("/backup", ctfsrc.Export)
 	server.POST("/backup", ctfsrc.Import)
 
-	// html serving
-	server.GET("/", servehtml.LoginHTML)
-	server.GET("/dashboard", servehtml.AdminHTML)
-	server.GET("/ctf", servehtml.CtfHTML)
-
-	server.Run(":80")
+	server.Run(":8888")
 }
