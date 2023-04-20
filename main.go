@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/Fabucik/ctf-portal/authentication"
 	"github.com/Fabucik/ctf-portal/ctfsrc"
-	"github.com/Fabucik/ctf-portal/servehtml"
 	"github.com/gin-gonic/gin"
 )
 
@@ -48,10 +47,5 @@ func main() {
 	server.GET("/backup", ctfsrc.Export)
 	server.POST("/backup", ctfsrc.Import)
 
-	// html serving
-	server.GET("/", servehtml.LoginHTML)
-	server.GET("/dashboard", servehtml.AdminHTML)
-	server.GET("/ctf", servehtml.CtfHTML)
-
-	server.Run(":80")
+	server.Run(":8888")
 }
