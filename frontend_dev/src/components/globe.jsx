@@ -19,7 +19,7 @@ export default function InterfaceGlobe() {
     }, []);
 
     function fetchChallenges() {
-        fetch('http://localhost:5000/challenges', {
+        fetch('/api/challenges', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
