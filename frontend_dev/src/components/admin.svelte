@@ -39,7 +39,7 @@
             pages[i] = false;
         }
         pages[3] = true;
-        fetch('/teams')
+        fetch('/api/teams')
             .then(res => res.json())
             .then(data => {
                 teams = data.users;
@@ -53,7 +53,7 @@
         let start = new Date(dateStart + ' ' + timeStart).getTime() / 1000;
         let end = new Date(dateEnd + ' ' + timeEnd).getTime() / 1000;
         if (start < end) {
-            fetch('/timedstart', {
+            fetch('/api/timedstart', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -82,7 +82,7 @@
     }
 
     function manualStart() {
-        fetch('/manualstart', {
+        fetch('/api/manualstart', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -100,7 +100,7 @@
     }
 
     function manualStop() {
-        fetch('/manualstart', {
+        fetch('/api/manualstart', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -118,7 +118,7 @@
     }
 
     function postAnnouncment() {
-        fetch('/announcement')
+        fetch('/api/announcement')
             .then(res => res.json())
             .then(data => {
                 announcementId = data.announcements.length})
@@ -128,7 +128,7 @@
             else {
                 announcementId = announcementId + 1
             }
-        fetch('/announcement', {
+        fetch('/api/announcement', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -169,7 +169,7 @@
 
     function addChallange() {
         makeChallange = makeChallange;
-        fetch('/upload', {
+        fetch('/api/upload', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -192,7 +192,7 @@
     }
 
     function deleteChallange(challangeIndex) {
-        fetch('/upload', {
+        fetch('/api/upload', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -207,7 +207,7 @@
                 alert('💀')
             }
         }).then(res =>{
-            fetch('/challenges')
+            fetch('/api/challenges')
                 .then(res => res.json())
                 .then(data => {
                     challanges = data.challanges;
@@ -216,7 +216,7 @@
     }
 
     function addTeam() {
-        fetch('/register', {
+        fetch('/api/register', {
 
             method: 'POST',
             headers: {
@@ -233,7 +233,7 @@
                 alert('Team already exists')
             }
         }).then(res =>{
-            fetch('/teams')
+            fetch('/api/teams')
                 .then(res => res.json())
                 .then(data => {
                     teams = data.users;
@@ -243,7 +243,7 @@
 
     function deleteTeam(teamIndex) {
         var delUsername = teams[teamIndex].username
-        fetch('/teams', {
+        fetch('/api/teams', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -258,7 +258,7 @@
                 alert('💀')
             }
         }).then(res => {
-            fetch('/teams')
+            fetch('/api/teams')
                 .then(res => res.json())
                 .then(data => {
                     teams = data.users;

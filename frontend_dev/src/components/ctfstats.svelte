@@ -1,4 +1,6 @@
 <script>
+    import 'https://cdn.jsdelivr.net/npm/dohjs@latest/dist/doh.min.js';
+
     let days = "00";
     let hours = "00";
     let minutes = "00";
@@ -6,15 +8,23 @@
     let nano = "00";
     let announcements = ["This is testing announcement so that I can know how it looks."]; 
     let teams = ["Team1", "Team2", "Team3", "Team4", "Team5"];
+
     function getTimer() {
-        return fetch('/timedstop').then(res => res.json()).then(data => data.stoptime);
+        return fetch('/api/timedstart').then(res => res.json()).then(data => { console.log(data); countDown(data) });
     }
 
-    let endTime = getTimer()
+getTimer()
 
-    function countDown() {
-        let now = new Date().getTime();
-        let distance = endTime - now;
+
+    var end = 0;
+
+    function countDown(data) {
+        if (end == 0) {
+            end = data.stoptime;
+        }
+        let now = new Date().getTime().toString().slice(0, 10);
+        let distance = end - now;
+
 
         if (distance > 0) {
             days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -32,9 +42,8 @@
             nano = "00";
         }
         
-        setTimeout(countDown, 10);
+        setTimeout(countDown, 1000);
     }
-    countDown();
 
     function getAnnouncements() {
         fetch('/announcement').then(res => res.json())

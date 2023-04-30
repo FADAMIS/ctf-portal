@@ -2,8 +2,17 @@ import React, { useState, useEffect, createElement } from 'react';
 import Globe from 'react-globe.gl';
 
 export default function InterfaceGlobe() {
+    const [isHover, setIsHover] = useState(false);
     const [geoData, setGeoData] = useState([]);
     const [hoverD, setHoverD] = useState(null);
+
+    const handleMouseEnter = () => {
+        setIsHover(true);
+     };
+  
+     const handleMouseLeave = () => {
+        setIsHover(false);
+     };
 
     useEffect(() => {
         fetch('./map.geojson').then(res => res.json()).then(data => setGeoData(data.features));
@@ -65,10 +74,19 @@ export default function InterfaceGlobe() {
             polygonsTransitionDuration={150}
             onPolygonClick={d => handlePolygonClick(d)}
             />
-            <div id="challengeBlock" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, margin: 'auto', backgroundColor: 'rgb(22, 22, 22)', display: 'none', width: 600, height: 400, fontFamily: 'monospace', borderRadius: '10px', padding: '30px', border: '2px solid #5D34B3' }}>
-                <h1 id="challengeName" className="challengeInfo" style={{ color: 'whitesmoke' }}>Challenge</h1>
-                <h3 id="challengeCountry" className="challengeInfo" style={{ color: 'whitesmoke' }}></h3>
-                <p id="challengeDescription" className="challengeInfo" style={{ color: 'whitesmoke' }}></p>
+            <div id="challengeBlock" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, margin: 'auto', backgroundColor: 'rgb(18, 18, 18)', display: 'none', width: 600, height: 400, fontFamily: 'monospace', borderRadius: '10px', padding: '30px', border: '2px solid #5D34B3' }}>
+                <div style={{ display: 'flex' }}>
+                    <div>
+                        <h1 id="challengeName" className="challengeInfo" style={{ color: 'whitesmoke', fontSize: '30px' }}>Challenge</h1>
+                        <h3 id="challengeCountry" className="challengeInfo" style={{ color: 'whitesmoke', marginBottom: '20px' }}></h3>
+                        <p id="challengeDescription" className="challengeInfo" style={{ color: 'gray' }}></p>
+                    </div>
+                    <div style={{ display: 'grid', gap: '10px', marginLeft: '40px', marginTop: '50px' }}>
+                        <input id="challengeFlag" type="text" className="challengeInfo" placeholder='Flag here' style={{ width: '14rem', height: '2.2rem', color: '#5D34B3', padding: '5px', backgroundColor: 'rgb(16, 16, 16)', borderRadius: '10px', border: '2px solid #5D34B3' }}/>
+                        <button id="challengeSubmit" class="challengeInfo" style={{ width: '14rem', height: '2.2rem', backgroundColor: isHover ? '#3d2473' : '#5D34B3', borderRadius: '10px' }} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>Submit</button>
+                        <button id="challengeFiles" class="challengeInfo" style={{ width: '14rem', height: '2.2rem', backgroundColor: isHover ? '#3d2473' : '#5D34B3', borderRadius: '10px' }} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>Download Files</button>
+                    </div>
+                </div>
             </div>
       </div>   
     );
