@@ -13,39 +13,39 @@ func main() {
 	server.Static("/assets", "./frontend/dist_collected/assets")
 
 	//authentication stuff
-	server.POST("/register", authentication.Register)
-	server.POST("/login", authentication.Login)
+	server.POST("/api/register", authentication.Register)
+	server.POST("/api/login", authentication.Login)
 
 	// challenge upload
-	server.POST("/upload", ctfsrc.CreateChallenge)
+	server.POST("/api/upload", ctfsrc.CreateChallenge)
 
 	// flag validation
-	server.POST("/validate", ctfsrc.ValidateFlag)
+	server.POST("/api/validate", ctfsrc.ValidateFlag)
 
 	// lists challenges
-	server.GET("/challenges", ctfsrc.GetChallenges)
+	server.GET("/api/challenges", ctfsrc.GetChallenges)
 
 	// team management
-	server.GET("/teams", ctfsrc.GetTeams)
-	server.DELETE("/teams", ctfsrc.DeleteTeam)
+	server.GET("/api/teams", ctfsrc.GetTeams)
+	server.DELETE("/api/teams", ctfsrc.DeleteTeam)
 
 	// returns json with all teams and their points
-	server.GET("/points", ctfsrc.GetAllPoints)
+	server.GET("/api/points", ctfsrc.GetAllPoints)
 
 	// ctf start and stop
-	server.POST("/timedstart", ctfsrc.SetTime)
-	server.GET("/timedstart", ctfsrc.GetTime)
-	server.POST("/manualstart", ctfsrc.SetManualStartStop)
-	server.GET("/manualstart", ctfsrc.GetManualStartStop)
+	server.POST("/api/timedstart", ctfsrc.SetTime)
+	server.GET("/api/timedstart", ctfsrc.GetTime)
+	server.POST("/api/manualstart", ctfsrc.SetManualStartStop)
+	server.GET("/api/manualstart", ctfsrc.GetManualStartStop)
 
 	// announcement stuff
-	server.POST("/announcement", ctfsrc.CreateAnnouncement)
-	server.GET("/announcement", ctfsrc.GetAnnouncements)
-	server.DELETE("/announcement", ctfsrc.DeleteAnnouncement)
+	server.POST("/api/announcement", ctfsrc.CreateAnnouncement)
+	server.GET("/api/announcement", ctfsrc.GetAnnouncements)
+	server.DELETE("/api/announcement", ctfsrc.DeleteAnnouncement)
 
 	// importing and exporting CTF challenges
-	server.GET("/backup", ctfsrc.Export)
-	server.POST("/backup", ctfsrc.Import)
+	server.GET("/api/backup", ctfsrc.Export)
+	server.POST("/api/backup", ctfsrc.Import)
 
 	server.Run(":8888")
 }
