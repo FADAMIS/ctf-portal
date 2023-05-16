@@ -1,4 +1,14 @@
 <script>
+
+    async function validate() {
+          const response = await fetch('/api/teams');
+          if (response.status === 401) {
+            window.location.href = '/ctf';
+          }
+    }
+
+    validate();
+
     let pages = [false, false, false, false];
     let teams = [{name: '', password: '', score: 0, solved: []}];
     let challanges = [];

@@ -18,25 +18,27 @@ export default function InterfaceGlobe() {
         fetch('./map.geojson').then(res => res.json()).then(data => setGeoData(data.features));
     }, []);
 
+    let challenges = [];
+
     function fetchChallenges() {
-        fetch('/api/challenges', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }.then(res => res.json()).then(data => {
-                console.log(data);
-            })
-        })
+        fetch('/api/challenges').then(res => res.json()).then(data => {
+            if (data.message === 'CTF is not yet started') {
+                document.getElementById('status').innerHTML = 'CTF is not yet started';
+            }
+            else {
+                document.getElementById('status').innerHTML = 'CTF is running';
+            }
+            });
     }
 
     function isCountryUsed(country) {
-        if (country === 'United States of America') {
-            return true;
+        fetchChallenges();
+        for (let i = 0; i < challenges.length; i++) {
+            if (country === challenges[i].country.toUpperCase() === country) {
+                return true;
+            }
         }
-        else {
-            return false;
-        }
+        return false;
     }
 
     const handlePolygonHover = (polygon) => {
@@ -74,6 +76,7 @@ export default function InterfaceGlobe() {
             polygonsTransitionDuration={150}
             onPolygonClick={d => handlePolygonClick(d)}
             />
+            <h1 id="status" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, margin: 'auto', backgroundColor: 'rgb(255, 255, 255)', color: 'whitesmoke' }}>test</h1>
             <div id="challengeBlock" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, margin: 'auto', backgroundColor: 'rgb(18, 18, 18)', display: 'none', width: 600, height: 400, fontFamily: 'monospace', borderRadius: '10px', padding: '30px', border: '2px solid #5D34B3' }}>
                 <div style={{ display: 'flex' }}>
                     <div>
@@ -83,8 +86,8 @@ export default function InterfaceGlobe() {
                     </div>
                     <div style={{ display: 'grid', gap: '10px', marginLeft: '40px', marginTop: '50px' }}>
                         <input id="challengeFlag" type="text" className="challengeInfo" placeholder='Flag here' style={{ width: '14rem', height: '2.2rem', color: '#5D34B3', padding: '5px', backgroundColor: 'rgb(16, 16, 16)', borderRadius: '10px', border: '2px solid #5D34B3' }}/>
-                        <button id="challengeSubmit" class="challengeInfo" style={{ width: '14rem', height: '2.2rem', backgroundColor: isHover ? '#3d2473' : '#5D34B3', borderRadius: '10px' }} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>Submit</button>
-                        <button id="challengeFiles" class="challengeInfo" style={{ width: '14rem', height: '2.2rem', backgroundColor: isHover ? '#3d2473' : '#5D34B3', borderRadius: '10px' }} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>Download Files</button>
+                        <button id="challengeSubmit" className="challengeInfo" style={{ width: '14rem', height: '2.2rem', backgroundColor: '#5D34B3', borderRadius: '10px' }}>Submit</button>
+                        <button id="challengeFiles" className="challengeInfo" style={{ width: '14rem', height: '2.2rem', backgroundColor: '#5D34B3', borderRadius: '10px' }}>Download Files</button>
                     </div>
                 </div>
             </div>
