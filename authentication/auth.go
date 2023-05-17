@@ -1,16 +1,15 @@
 package authentication
 
 import (
-	"encoding/json"
 	"net/http"
-	"os"
 
+	"github.com/Fabucik/ctf-portal/database"
 	"github.com/Fabucik/ctf-portal/entities"
 	"github.com/gin-gonic/gin"
 )
 
 func IsValidSession(session entities.Session) bool {
-	dbJson, _ := os.ReadFile("./database/session-cookies.json")
+	/*dbJson, _ := os.ReadFile("./database/session-cookies.json")
 	var sessions entities.Sessions
 	json.Unmarshal(dbJson, &sessions)
 
@@ -25,6 +24,15 @@ func IsValidSession(session entities.Session) bool {
 			}
 
 			return true
+		}
+	}
+
+	return false*/
+
+	sessions := database.ReadSessions(database.GetOpenedDB())
+	for i := 0; i < len(sessions.Sessions); i++ {
+		if session == sessions.Sessions[i] {
+			return !isExpired(session.ExpiresIn)
 		}
 	}
 

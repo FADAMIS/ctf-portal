@@ -3,9 +3,9 @@ package authentication
 import (
 	"encoding/json"
 	"net/http"
-	"os"
 	"time"
 
+	"github.com/Fabucik/ctf-portal/database"
 	"github.com/Fabucik/ctf-portal/entities"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -15,7 +15,7 @@ func Login(ctx *gin.Context) {
 	var credentials entities.User
 	ctx.Bind(&credentials)
 
-	dbJson, _ := os.ReadFile("./database/users.json")
+	/*dbJson, _ := os.ReadFile("./database/users.json")
 	var dbContent entities.Users
 	json.Unmarshal(dbJson, &dbContent)
 
@@ -23,6 +23,19 @@ func Login(ctx *gin.Context) {
 		// if credentials match, create session
 		if dbContent.Users[i].Username == credentials.Username && dbContent.Users[i].Password == credentials.Password {
 			session := createSessionCookie(credentials.Username)
+			ctx.SetCookie("session", session, 6*60*60, "/", "localhost", false, true)
+			ctx.JSON(http.StatusOK, gin.H{
+				"message": "Login successful",
+			})
+			return
+		}
+	}*/
+
+	allUsers := database.ReadUsers(database.GetOpenedDB())
+	for i := 0; i < len(allUsers.Users); i++ {
+		if allUsers.Users[i].Username == credentials.Username && allUsers.Users[i].Password == credentials.Password {
+			session := createSessionCookie(credentials.Username)
+			// CHANGE DOMAIN
 			ctx.SetCookie("session", session, 6*60*60, "/", "localhost", false, true)
 			ctx.JSON(http.StatusOK, gin.H{
 				"message": "Login successful",
@@ -50,15 +63,18 @@ func createSessionCookie(username string) string {
 
 	returnSession, _ := json.Marshal(session)
 
-	// read session database, append newly created session and write it back
-	var sessions entities.Sessions
-	sessionsJson, _ := os.ReadFile("./database/session-cookies.json")
-	json.Unmarshal(sessionsJson, &sessions)
+	/*
+		// read session database, append newly created session and write it back
+		var sessions entities.Sessions
+		sessionsJson, _ := os.ReadFile("./database/session-cookies.json")
+		json.Unmarshal(sessionsJson, &sessions)
 
-	sessions.Sessions = append(sessions.Sessions, session)
+		sessions.Sessions = append(sessions.Sessions, session)
 
-	writableJson, _ := json.MarshalIndent(sessions, "", "\t")
-	os.WriteFile("./database/session-cookies.json", writableJson, 0600)
+		writableJson, _ := json.MarshalIndent(sessions, "", "\t")
+		os.WriteFile("./database/session-cookies.json", writableJson, 0600)*/
+
+	database.WriteSession(database.GetOpenedDB(), session)
 
 	return string(returnSession)
 }

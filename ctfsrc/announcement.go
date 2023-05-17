@@ -3,9 +3,9 @@ package ctfsrc
 import (
 	"encoding/json"
 	"net/http"
-	"os"
 
 	"github.com/Fabucik/ctf-portal/authentication"
+	"github.com/Fabucik/ctf-portal/database"
 	"github.com/Fabucik/ctf-portal/entities"
 	"github.com/gin-gonic/gin"
 )
@@ -30,13 +30,16 @@ func CreateAnnouncement(ctx *gin.Context) {
 		return
 	}
 
-	var announcements entities.Announcements
-	announcementDb, _ := os.ReadFile("./database/announcements.json")
-	json.Unmarshal(announcementDb, &announcements)
+	/*
+		var announcements entities.Announcements
+		announcementDb, _ := os.ReadFile("./database/announcements.json")
+		json.Unmarshal(announcementDb, &announcements)
 
-	announcements.Announcements = append(announcements.Announcements, announcement)
-	writableJson, _ := json.MarshalIndent(announcements, "", "\t")
-	os.WriteFile("./database/announcements.json", writableJson, 0600)
+		announcements.Announcements = append(announcements.Announcements, announcement)
+		writableJson, _ := json.MarshalIndent(announcements, "", "\t")
+		os.WriteFile("./database/announcements.json", writableJson, 0600)*/
+
+	database.CreateAnnouncement(database.GetOpenedDB(), announcement)
 
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": "Announcement successfully created",
@@ -55,9 +58,12 @@ func GetAnnouncements(ctx *gin.Context) {
 		return
 	}
 
-	var announcements entities.Announcements
-	announcementDb, _ := os.ReadFile("./database/announcements.json")
-	json.Unmarshal(announcementDb, &announcements)
+	/*
+		var announcements entities.Announcements
+		announcementDb, _ := os.ReadFile("./database/announcements.json")
+		json.Unmarshal(announcementDb, &announcements)*/
+
+	announcements := database.ReadAnnouncements(database.GetOpenedDB())
 
 	ctx.JSON(http.StatusOK, announcements)
 }
@@ -74,18 +80,21 @@ func DeleteAnnouncement(ctx *gin.Context) {
 	var announcementToDelete entities.Announcement
 	ctx.Bind(&announcementToDelete)
 
-	var announcements entities.Announcements
-	announcementDb, _ := os.ReadFile("./database/announcements.json")
-	json.Unmarshal(announcementDb, &announcements)
+	/*
+		var announcements entities.Announcements
+		announcementDb, _ := os.ReadFile("./database/announcements.json")
+		json.Unmarshal(announcementDb, &announcements)
 
-	for i := 0; i < len(announcements.Announcements); i++ {
-		if announcementToDelete.ID == announcements.Announcements[i].ID {
-			announcements.Announcements = append(announcements.Announcements[:i], announcements.Announcements[i+1:]...)
+		for i := 0; i < len(announcements.Announcements); i++ {
+			if announcementToDelete.ID == announcements.Announcements[i].ID {
+				announcements.Announcements = append(announcements.Announcements[:i], announcements.Announcements[i+1:]...)
+			}
 		}
-	}
 
-	writableJson, _ := json.MarshalIndent(&announcements, "", "\t")
-	os.WriteFile("./database/announcements.json", writableJson, 0600)
+		writableJson, _ := json.MarshalIndent(&announcements, "", "\t")
+		os.WriteFile("./database/announcements.json", writableJson, 0600)*/
+
+	database.DeleteAnnouncement(database.GetOpenedDB(), announcementToDelete)
 
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": "Successfully deleted announcement",
@@ -93,9 +102,11 @@ func DeleteAnnouncement(ctx *gin.Context) {
 }
 
 func DoesAnnouncementExist(announcement entities.Announcement) bool {
-	var announcements entities.Announcements
+	/*var announcements entities.Announcements
 	announcementDb, _ := os.ReadFile("./database/announcements.json")
-	json.Unmarshal(announcementDb, &announcements)
+	json.Unmarshal(announcementDb, &announcements)*/
+
+	announcements := database.ReadAnnouncements(database.GetOpenedDB())
 
 	for i := 0; i < len(announcements.Announcements); i++ {
 		if announcement.ID == announcements.Announcements[i].ID {

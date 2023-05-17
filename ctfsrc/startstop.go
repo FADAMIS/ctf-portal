@@ -3,11 +3,11 @@ package ctfsrc
 import (
 	"encoding/json"
 	"net/http"
-	"os"
 	"strconv"
 	"time"
 
 	"github.com/Fabucik/ctf-portal/authentication"
+	"github.com/Fabucik/ctf-portal/database"
 	"github.com/Fabucik/ctf-portal/entities"
 	"github.com/gin-gonic/gin"
 )
@@ -21,19 +21,28 @@ func SetTime(ctx *gin.Context) {
 		return
 	}
 
-	var ctfTime entities.AutomaticStart
-	ctx.Bind(&ctfTime)
+	var autoStart entities.AutomaticStart
+	ctx.Bind(&autoStart)
 
-	var startInfo entities.StartStopInfo
-	startInfoDb, _ := os.ReadFile("./database/time.json")
-	json.Unmarshal(startInfoDb, &startInfo)
+	/*
+		var startInfo entities.StartStopInfo
+		startInfoDb, _ := os.ReadFile("./database/time.json")
+		json.Unmarshal(startInfoDb, &startInfo)
 
-	startInfo.Automatic = ctfTime
-	startInfo.Automatic.IsValid = true
-	startInfo.Manual.IsValid = false
 
-	writableJson, _ := json.MarshalIndent(startInfo, "", "\t")
-	os.WriteFile("./database/time.json", writableJson, 0600)
+		startInfo.Automatic = ctfTime
+		startInfo.Automatic.IsValid = true
+		startInfo.Manual.IsValid = false
+
+		writableJson, _ := json.MarshalIndent(startInfo, "", "\t")
+		os.WriteFile("./database/time.json", writableJson, 0600)*/
+
+	var manualStart entities.ManualStart
+	manualStart.IsValid = false
+	autoStart.IsValid = true
+
+	database.WriteAutoStart(database.GetOpenedDB(), autoStart)
+	database.WriteManStart(database.GetOpenedDB(), manualStart)
 
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": "Successfully set time",
@@ -53,11 +62,14 @@ func GetTime(ctx *gin.Context) {
 		return
 	}
 
-	var ctfTime entities.StartStopInfo
-	timeDb, _ := os.ReadFile("./database/time.json")
-	json.Unmarshal(timeDb, &ctfTime)
+	/*
+		var ctfTime entities.StartStopInfo
+		timeDb, _ := os.ReadFile("./database/time.json")
+		json.Unmarshal(timeDb, &ctfTime)*/
 
-	ctx.JSON(http.StatusOK, ctfTime.Automatic)
+	ctfTime := database.ReadAutoStart(database.GetOpenedDB())
+
+	ctx.JSON(http.StatusOK, ctfTime)
 }
 
 func SetManualStartStop(ctx *gin.Context) {
@@ -72,19 +84,28 @@ func SetManualStartStop(ctx *gin.Context) {
 	var manualStart entities.ManualStart
 	ctx.Bind(&manualStart)
 
-	var startInfo entities.StartStopInfo
-	startInfoDb, _ := os.ReadFile("./database/time.json")
-	json.Unmarshal(startInfoDb, &startInfo)
+	/*
+		var startInfo entities.StartStopInfo
+		startInfoDb, _ := os.ReadFile("./database/time.json")
+		json.Unmarshal(startInfoDb, &startInfo)
 
-	startInfo.Manual = manualStart
-	startInfo.Manual.IsValid = true
-	startInfo.Automatic.IsValid = false
+		startInfo.Manual = manualStart
+		startInfo.Manual.IsValid = true
+		startInfo.Automatic.IsValid = false
 
-	writableJson, _ := json.MarshalIndent(&startInfo, "", "\t")
-	os.WriteFile("./database/time.json", writableJson, 0600)
+		writableJson, _ := json.MarshalIndent(&startInfo, "", "\t")
+		os.WriteFile("./database/time.json", writableJson, 0600)*/
+
+	var autoStart entities.AutomaticStart
+	autoStart.IsValid = false
+	manualStart.IsValid = true
+
+	database.WriteManStart(database.GetOpenedDB(), manualStart)
+	database.WriteAutoStart(database.GetOpenedDB(), autoStart)
 
 	ctx.JSON(http.StatusOK, gin.H{
-		"message": "CTF running status is " + strconv.FormatBool(manualStart.IsStarted),
+		"message":   "Successfully set time",
+		"isrunning": strconv.FormatBool(manualStart.IsStarted),
 	})
 }
 
@@ -101,39 +122,50 @@ func GetManualStartStop(ctx *gin.Context) {
 		return
 	}
 
-	var ctfTime entities.ManualStart
-	startDb, _ := os.ReadFile("./database/time.json")
-	json.Unmarshal(startDb, &ctfTime)
+	/*
+		var ctfTime entities.ManualStart
+		startDb, _ := os.ReadFile("./database/time.json")
+		json.Unmarshal(startDb, &ctfTime)*/
 
-	ctx.JSON(http.StatusOK, ctfTime)
+	manTime := database.ReadManStart(database.GetOpenedDB())
+
+	ctx.JSON(http.StatusOK, manTime)
 }
 
 func IsCtfExpired() bool {
-	var startInfo entities.StartStopInfo
-	timeDb, _ := os.ReadFile("./database/time.json")
-	json.Unmarshal(timeDb, &startInfo)
+	/*
+		var startInfo entities.StartStopInfo
+		timeDb, _ := os.ReadFile("./database/time.json")
+		json.Unmarshal(timeDb, &startInfo)*/
+
+	autoStart := database.ReadAutoStart(database.GetOpenedDB())
+	manStart := database.ReadManStart(database.GetOpenedDB())
 
 	// if automatic start is used
-	if startInfo.Automatic.IsValid {
+	if autoStart.IsValid {
 		now := time.Now()
-		return startInfo.Automatic.StopTime < now.Unix()
+		return autoStart.StopTime < now.Unix()
 	}
 
 	// if manual start is used
-	return !startInfo.Manual.IsStarted
+	return !manStart.IsStarted
 }
 
 func IsCtfStarted() bool {
-	var startInfo entities.StartStopInfo
-	timeDb, _ := os.ReadFile("./database/time.json")
-	json.Unmarshal(timeDb, &startInfo)
+	/*
+		var startInfo entities.StartStopInfo
+		timeDb, _ := os.ReadFile("./database/time.json")
+		json.Unmarshal(timeDb, &startInfo)*/
+
+	autoStart := database.ReadAutoStart(database.GetOpenedDB())
+	manStart := database.ReadManStart(database.GetOpenedDB())
 
 	// if automatic start is used
-	if startInfo.Automatic.IsValid {
+	if autoStart.IsValid {
 		now := time.Now()
-		return startInfo.Automatic.StartTime < now.Unix()
+		return autoStart.StartTime < now.Unix()
 	}
 
 	// if manual start is used
-	return startInfo.Manual.IsStarted
+	return manStart.IsStarted
 }
