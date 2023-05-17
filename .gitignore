@@ -1,6 +1,3 @@
-database/*
-!database/.gitignore
-
 CTFCONTENTS/*
 !CTFCONTENTS/.gitignore
 
