@@ -51,6 +51,7 @@ func AssignPoints(points int, team string, challenge string) bool {
 		}
 	}
 
+	teamPoints.Team = team
 	teamPoints.Solved += ";" + challenge
 	teamPoints.PointAmount += points
 	database.UpdatePoints(database.GetOpenedDB(), teamPoints)

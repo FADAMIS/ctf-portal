@@ -42,6 +42,8 @@ func ValidateFlag(ctx *gin.Context) {
 		ctx.JSON(http.StatusNotFound, gin.H{
 			"message": "Challenge not found",
 		})
+
+		return
 	}
 
 	// read flag and compare it with input
@@ -50,6 +52,8 @@ func ValidateFlag(ctx *gin.Context) {
 		ctx.JSON(http.StatusConflict, gin.H{
 			"message": "Wrong flag",
 		})
+
+		return
 	}
 
 	// assign points

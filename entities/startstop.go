@@ -5,6 +5,7 @@ type AutomaticStart struct {
 	StopTime  int64 `json:"stoptime"`
 	// false if manual start is used
 	IsValid bool `json:"isvalid"`
+	ID	int	`json:"id"`
 }
 
 type ManualStart struct {
@@ -12,6 +13,7 @@ type ManualStart struct {
 
 	// false if automatic start is used
 	IsValid bool `json:"isvalid"`
+	ID	int	`json:"id"`
 }
 
 // this is used to write both of entries to the "database"
