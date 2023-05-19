@@ -108,7 +108,7 @@ func ReadTeamPoints(db *gorm.DB, team string) entities.TeamPoints {
 }
 
 func WriteAutoStart(db *gorm.DB, time entities.AutomaticStart) {
-	db.Savee(&time)
+	db.Save(&time)
 }
 
 func ReadAutoStart(db *gorm.DB) entities.AutomaticStart {
