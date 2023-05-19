@@ -54,30 +54,37 @@
     }
 
     let announcements = [];
-
-    fetch('/api/announcement').then(res => res.json())
-        .then(data => {
-            announcements = data.announcements})
-
     let teams = [];
+    
+    function updateStats() {
+	fetch('/api/announcement').then(res => res.json())
+		.then(data => {
+			announcements = data.announcements
+	})
 
-    fetch('/api/points').then(res => res.json())
-            .then(data => { teams = data.allpoints })
+	fetch('/api/points').then(res => res.json())
+		.then(data => { 
+			teams = data.allpoints;
+			teams.sort(function(a, b) {return b.points - a.points});
+	})
+    }
+    updateStats();
+    setInterval(updateStats, 5000);
 
 </script>
 
 <main>
 <div class="overflow-hidden">
-    <div class="w-64 h-16 pt-5 pl-10 pr-5 hover:h-52 hover:w-96 transition-all border border-violet-500 rounded-xl bg-gray-950 overflow-y-scroll overflow-x-hidden top-[-10px] left-[-10px] z-10 absolute">
-    <h1 class="text-white text-2xl mb-2">Announcements:</h1>
+    <div class="w-64 h-16 pt-5 pl-7 pr-5 hover:h-52 hover:w-96 transition-all border border-violet-500 rounded-xl bg-gray-950 overflow-y-scroll overflow-x-hidden top-[-10px] left-[-10px] z-10 absolute">
+    <h1 class="text-white text-2xl mb-2 font-mono">Announcements:</h1>
     {#each announcements as announcement}
-    <h1 class="text-white break-word font-mono">admin: {announcement.message}</h1>
+    <h1 class="text-white break-word font-mono"><b>admin:</b> {announcement.message}</h1>
     {/each}
     </div>
     <div class="w-64 h-16 pt-5 pr-10 pl-5 hover:h-52 hover:w-96 transition-all border border-violet-500 rounded-xl bg-gray-950 overflow-y-scroll overflow-x-hidden top-[-10px] right-[-10px] z-10 absolute">
-    <h1 class="text-white text-2xl mb-2">Leaderboard:</h1>
+    <h1 class="text-white text-2xl mb-2 font-mono">Leaderboard:</h1>
     {#each teams as team, order}
-    <h1 class="text-white break-word font-mono">{order + 1}#_{team.team}</h1>
+    <h1 class="text-white break-word font-mono">{order + 1}#{team.team}<b class="ml-56">{team.points}</b></h1>
     {/each}
     </div>
     <div class="grid place-items-center h-20 w-screen bottom-3 z-10 absolute">

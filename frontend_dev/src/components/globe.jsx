@@ -53,6 +53,7 @@ const types = {
           'dtd':           'application/xml-dtd',
           'dv':            'video/x-dv',
           'dvi':           'application/x-dvi',
+	  'elf':	   'application/x-elf',
           'eot':           'application/vnd.ms-fontobject',
           'eps':           'application/postscript',
           'etx':           'text/x-setext',
@@ -127,6 +128,7 @@ const types = {
           'axa':           'audio/annodex',
           'axv':           'video/annodex',
           'xspf':          'application/xspf+xml',
+	  'pcap':          'application/vnd.tcpdump.pcap',
           'pbm':           'image/x-portable-bitmap',
           'pct':           'image/pict',
           'pdf':           'application/pdf',
@@ -295,6 +297,7 @@ export default function InterfaceGlobe() {
             document.getElementById('challengeBlock').style.display = 'block';
 	    document.getElementById('challengeName').innerHTML = challenge.name;
             document.getElementById('challengeCountry').innerHTML = d.properties.ADMIN;
+	    document.getElementById('challengePoints').innerHTML = challenge.points + ' points';
             document.getElementById('challengeDescription').innerHTML = challenge.description;
             addEventListener('click', () => {
                 if(event.target.id !== 'challengeBlock' && event.target.className !== 'challengeInfo') {
@@ -330,6 +333,7 @@ export default function InterfaceGlobe() {
                         <p id="challengeDescription" className="challengeInfo" style={{ color: 'gray' }}></p>
                     </div>
                     <div style={{ display: 'grid', gap: '10px', marginLeft: '40px', marginTop: '50px' }}>
+			<h3 id="challengePoints" className="challengeInfo" style={{ color: 'whitesmoke', fontFamily: 'monospace', fontSize: '20px' }}>points: 0</h3>
                         <input id="challengeFlag" type="text" className="challengeInfo" placeholder='Flag here' style={{ width: '14rem', height: '2.2rem', color: '#5D34B3', padding: '5px', backgroundColor: 'rgb(16, 16, 16)', borderRadius: '10px', border: '2px solid #5D34B3' }}/>
                         <button id="challengeSubmit" className="challengeInfo" onClick={flagSubmit} style={{ width: '14rem', height: '2.2rem', backgroundColor: '#5D34B3', borderRadius: '10px' }}>Submit</button>
                         <button id="challengeFiles" className="challengeInfo" onClick={download} style={{ width: '14rem', height: '2.2rem', backgroundColor: '#5D34B3', borderRadius: '10px' }}>Download Files</button>

@@ -1,4 +1,13 @@
 <script>
+    async function validate() {
+          const response = await fetch('/api/announcement');
+          if (response.status === 200) {
+            window.location.href = '/ctf';
+          }
+    }
+	
+    validate();
+
     //send login request with fetch
     let username
     let password

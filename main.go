@@ -4,10 +4,13 @@ import (
 	"github.com/Fabucik/ctf-portal/authentication"
 	"github.com/Fabucik/ctf-portal/ctfsrc"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-contrib/gzip"
 )
 
 func main() {
+	gin.SetMode(gin.ReleaseMode)
 	server := gin.Default()
+	server.Use(gzip.Gzip(gzip.DefaultCompression))
 
 	server.LoadHTMLFiles("frontend/dist_collected/index.html", "frontend/dist_collected/admin.html", "frontend/dist_collected/CTF.html")
 	server.Static("/assets", "./frontend/dist_collected/assets")
