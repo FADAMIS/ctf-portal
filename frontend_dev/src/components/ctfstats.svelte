@@ -36,10 +36,10 @@
         let distance = end - parseInt(now);
 
         if (distance > 0) {
-            days = Math.floor(distance / (24 * 60 * 60));
-            hours = Math.floor((distance % (24 * 60 * 60)) / (60 * 60));
-            minutes = Math.floor((distance % (60 * 60)) / (60));
-            seconds = Math.floor((distance % (60)));
+            days = Math.floor(distance / (24 * 60 * 60)).toString().padStart(2, '0');
+            hours = Math.floor((distance % (24 * 60 * 60)) / (60 * 60)).toString().padStart(2, '0');
+            minutes = Math.floor((distance % (60 * 60)) / (60)).toString().padStart(2, '0');
+            seconds = Math.floor((distance % (60))).toString().padStart(2, '0');
         }
 
         else if (distance < 0) {

@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 
 	"github.com/Fabucik/ctf-portal/authentication"
 	"github.com/Fabucik/ctf-portal/entities"
@@ -24,6 +25,14 @@ func CreateChallenge(ctx *gin.Context) {
 
 	isAdmin := authentication.IsAdmin(ctx, session)
 	if !isAdmin {
+		return
+	}
+
+	if strings.Contains(challenge.Name, ";") {
+		ctx.JSON(http.StatusForbidden, gin.H{
+			"message": "Cannot use ';' in challenge name",
+		})
+
 		return
 	}
 

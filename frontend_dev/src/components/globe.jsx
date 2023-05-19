@@ -259,7 +259,7 @@ export default function InterfaceGlobe() {
         }
       }
 
-      if files == [] {
+      if (files == []) {
 	  return
       }
 
